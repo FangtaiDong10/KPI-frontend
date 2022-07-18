@@ -1,9 +1,51 @@
 <script setup>
-import { NLayoutSider, NA } from 'naive-ui';
-import { ref } from 'vue';
+import { NLayoutSider, NA, NMenu, NIcon } from 'naive-ui';
+import { ref, h } from 'vue';
 import { useRoute, RouterLink } from 'vue-router';
+import { Home, Book } from '@vicons/ionicons5';
 
 const route = useRoute();
+const currentKey = ref('home');
+
+// menu items
+const menu = [
+  {
+    label: 'Home',
+    key: 'home',
+    path: '/',
+    icon: Home,
+  },
+  {
+    label: 'Courses',
+    key: 'courses',
+    path: '/',
+    icon: Book,
+    children: [
+      {
+        label: 'Course 1',
+        key: 'course1',
+        path: '/course/1',
+      },
+      {
+        label: 'Course 2',
+        key: 'course2',
+        path: '/course/2',
+      },
+    ],
+  },
+];
+const renderMenu = (menu) =>
+  menu.map((item) => ({
+    label: () => h(RouterLink, { to: item.path }, item.label),
+    key: item.key,
+    icon:
+      item.icon != null
+        ? () => h(NIcon, null, { default: () => h(item.icon) })
+        : undefined,
+    children: item.children ? renderMenu(item.children) : undefined,
+  }));
+const menuOptions = renderMenu(menu);
+
 const collapsed = ref(false);
 </script>
 
@@ -22,6 +64,16 @@ const collapsed = ref(false);
         <span>KPI System</span>
       </n-a>
     </router-link>
+    <n-menu
+      :value="currentKey"
+      :options="menuOptions"
+      :collapsed="collapsed"
+      @update:value="
+        (k) => {
+          currentKey = k;
+        }
+      "
+    />
   </n-layout-sider>
 </template>
 
