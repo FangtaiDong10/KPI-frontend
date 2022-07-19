@@ -9,37 +9,31 @@ import {
   NH5,
   NButton,
   useMessage,
-} from 'naive-ui';
-import { useRouter } from 'vue-router';
-import { computed, ref } from 'vue';
-// import { useAuthStore } from "../stores/auth";
+} from "naive-ui";
+import { useRouter } from "vue-router";
+import { computed, ref } from "vue";
+import { useAuthStore } from "@/stores/auth";
 
 const router = useRouter();
-// const authStore = useAuthStore();
-
+// initialize auth store and can be shared by all components
+const authStore = useAuthStore();
 const message = useMessage();
+
 const formRef = ref(null);
 const loginModel = ref({
-  username: 'admin',
-  password: 'password',
+  username: "admin",
+  password: "password",
 });
 
 const loading = ref(false);
 const disabled = computed(
-  () => loginModel.value.username === '' || loginModel.value.password === ''
+  () => loginModel.value.username === "" || loginModel.value.password === ""
 );
 
+// handle login function
 const handleLogin = async () => {
-  //   loading.value = true;
-  //   try {
-  //     await authStore.login(loginModel.value.username, loginModel.value.password);
-  //     loading.value = true;
-  //     const redirectUrl =
-  //       router.currentRoute.value.query.redirect?.toString() || "/";
-  //     await router.replace(redirectUrl);
-  //   } catch (e) {
-  //     message.error(e.response.data.message);
-  //   }
+  loading.value = true;
+  await authStore.login(loginModel.value.username, loginModel.value.password);
 };
 </script>
 
@@ -50,6 +44,7 @@ const handleLogin = async () => {
       <n-h5>Please login to continue.</n-h5>
 
       <!-- login form -->
+      <!-- ref property in form for form checking -->
       <n-form ref="formRef" :model="loginModel">
         <n-form-item path="username" label="Username">
           <n-input
@@ -100,6 +95,6 @@ const handleLogin = async () => {
   align-items: center;
 }
 .login-card {
-  margin-right: 15vw;
+  margin-right: 20vw;
 }
 </style>
