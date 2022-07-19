@@ -10,6 +10,7 @@ watchEffect(async () => {
   if (route.params.id) {
     const course = await getCourse(route.params.id);
     courseData.value = course;
+    document.title = course.name;
   }
 });
 </script>

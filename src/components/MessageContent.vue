@@ -1,4 +1,4 @@
-<template>message</template>
+<template></template>
 <script setup>
 import { useMessage } from "naive-ui";
 //store the JS obejct which created by useMessage() to the browser's $message variable

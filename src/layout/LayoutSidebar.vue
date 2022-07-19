@@ -1,36 +1,36 @@
 <script setup>
-import { NLayoutSider, NA, NMenu, NIcon } from 'naive-ui';
-import { ref, h } from 'vue';
-import { useRoute, RouterLink } from 'vue-router';
-import { Home, Book } from '@vicons/ionicons5';
+import { NLayoutSider, NA, NMenu, NIcon } from "naive-ui";
+import { ref, h, watchEffect } from "vue";
+import { useRoute, RouterLink } from "vue-router";
+import { Home, Book } from "@vicons/ionicons5";
 
 const route = useRoute();
 const collapsed = ref(false);
 const currentKey = ref(null);
 
+watchEffect(() => {
+  // console.log(route.fullPath);
+  currentKey.value = route.fullPath.slice(1);
+});
+
 // menu items
 const menu = [
   {
-    label: 'Home',
-    key: 'home',
-    path: '/',
+    label: "Home",
+    key: "home",
+    path: "/",
     icon: Home,
   },
   {
-    label: 'Courses',
-    key: 'courses',
-    path: '/courses',
+    label: "Courses",
+    key: "courses",
+    path: "/courses",
     icon: Book,
     children: [
       {
-        label: 'Course 1',
-        key: 'course1',
-        path: '/courses/62d27c16379f1726b3be623a',
-      },
-      {
-        label: 'Course 2',
-        key: 'course2',
-        path: '/courses/62d27c16379f1726b3be623a',
+        label: "Python Boost1",
+        key: "courses/62d27c16379f1726b3be623a",
+        path: "/courses/62d27c16379f1726b3be623a",
       },
     ],
   },
@@ -46,8 +46,6 @@ const renderMenu = (menu) =>
     children: item.children ? renderMenu(item.children) : undefined,
   }));
 const menuOptions = renderMenu(menu);
-
-
 </script>
 
 <template>
