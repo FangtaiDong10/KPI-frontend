@@ -9,8 +9,11 @@ import {
 } from "naive-ui";
 import { useAuthStore } from "../stores/auth";
 import { useRouter } from "vue-router";
+import { storeToRefs } from "pinia";
 
 const authStore = useAuthStore();
+const auth = storeToRefs(authStore);
+
 const router = useRouter();
 
 const options = [{ label: "Sign Out", key: "logout" }];
@@ -30,7 +33,7 @@ const handleOptionSelect = async (key) => {
     </n-breadcrumb>
 
     <n-space align="center" class="navs" :size="20">
-      <span>Hello User!</span>
+      <span>Hello {{ auth.userInfo.value.username }} !</span>
       <n-dropdown
         placement="bottom-end"
         :options="options"
