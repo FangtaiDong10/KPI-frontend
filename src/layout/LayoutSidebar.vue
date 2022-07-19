@@ -5,7 +5,8 @@ import { useRoute, RouterLink } from 'vue-router';
 import { Home, Book } from '@vicons/ionicons5';
 
 const route = useRoute();
-const currentKey = ref('home');
+const collapsed = ref(false);
+const currentKey = ref(null);
 
 // menu items
 const menu = [
@@ -18,7 +19,7 @@ const menu = [
   {
     label: 'Courses',
     key: 'courses',
-    path: '/',
+    path: '/courses',
     icon: Book,
     children: [
       {
@@ -46,7 +47,7 @@ const renderMenu = (menu) =>
   }));
 const menuOptions = renderMenu(menu);
 
-const collapsed = ref(false);
+
 </script>
 
 <template>
@@ -65,14 +66,9 @@ const collapsed = ref(false);
       </n-a>
     </router-link>
     <n-menu
-      :value="currentKey"
+      v-model:value="currentKey"
       :options="menuOptions"
       :collapsed="collapsed"
-      @update:value="
-        (k) => {
-          currentKey = k;
-        }
-      "
     />
   </n-layout-sider>
 </template>

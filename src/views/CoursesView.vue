@@ -1,0 +1,1 @@
+<template>Courses List</template>

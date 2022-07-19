@@ -1,1 +1,10 @@
-<template>Content</template>
+<script setup>
+import { RouterView } from 'vue-router';
+import { NLayoutContent } from 'naive-ui';
+</script>
+
+<template>
+  <!-- <n-layout-content> -->
+    <router-view></router-view>
+  <!-- </n-layout-content> -->
+</template>
