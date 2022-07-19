@@ -1,4 +1,10 @@
 <script setup>
+import { useAuthStore } from "@/stores/auth";
+const authStore = useAuthStore();
+authStore.reload();
 </script>
 
-<template>hello world</template>
+<template>
+  <!-- no need parentheses(braket) when using pinia getters -->
+  {{ authStore.getUserInfo }}
+</template>

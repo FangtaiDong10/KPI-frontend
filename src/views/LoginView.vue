@@ -33,7 +33,16 @@ const disabled = computed(
 // handle login function
 const handleLogin = async () => {
   loading.value = true;
-  await authStore.login(loginModel.value.username, loginModel.value.password);
+  try {
+    await authStore.login(loginModel.value.username, loginModel.value.password);
+
+    // redirect to home page
+    loading.value = true;
+    const redirect_url = "/";
+    await router.replace(redirect_url);
+  } catch (e) {
+    message.error(e.response.data.message);
+  }
 };
 </script>
 

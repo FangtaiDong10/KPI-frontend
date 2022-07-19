@@ -1,4 +1,5 @@
 import axios from "../utils/http";
+import { getUser } from "@/api/user";
 import { defineStore } from "pinia";
 
 // prevent the name from being used as a variable
@@ -8,8 +9,8 @@ export const useAuthStore = defineStore({
   id: "auth",
   // data will be stored in state
   state: () => ({
-    token: null,
-    userInfo: null,
+    token: localStorage.getItem(prefix + "token"),
+    userInfo: JSON.parse(localStorage.getItem(prefix + "user_info")),
   }),
 
   getters: {
@@ -21,18 +22,22 @@ export const useAuthStore = defineStore({
 
   actions: {
     async login(username, password) {
-      try {
-        const response = await axios.post("auth/login", { username, password });
-        const { data } = response;
-        localStorage.setItem(prefix + "token", data.token);
-        localStorage.setItem(prefix + "user_info", JSON.stringify(data.user));
-        this.token = data.token;
-        this.userInfo = data.user;
-      } catch (e) {
-        alert(e);
-      }
+      const response = await axios.post("auth/login", { username, password });
+      const { data } = response;
+      localStorage.setItem(prefix + "token", data.token);
+      localStorage.setItem(prefix + "user_info", JSON.stringify(data.user));
+      this.token = data.token;
+      this.userInfo = data.user;
     },
-    async reload() {},
-    async logout() {},
+    async reload() {
+      // based on current username to refresh userInfo 
+      this.userInfo = await getUser(this.userInfo.username);
+    },
+    async logout() {
+      localStorage.removeItem(prefix + "token");
+      localStorage.removeItem(prefix + "user_info");
+      this.token = null;
+      this.userInfo = null;
+    },
   },
 });
