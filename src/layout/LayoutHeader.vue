@@ -6,13 +6,21 @@ import {
   NSpace,
   NAvatar,
   NDropdown,
-} from 'naive-ui';
+} from "naive-ui";
+import { useAuthStore } from "../stores/auth";
+import { useRouter } from "vue-router";
 
-const options = [{ label: 'Sign Out', key: 'logout' }];
-const handleOptionSelect = (key) => {
-  alert(key);
+const authStore = useAuthStore();
+const router = useRouter();
+
+const options = [{ label: "Sign Out", key: "logout" }];
+const handleOptionSelect = async (key) => {
+  // alert(key);
+  if (key === "logout") {
+    await authStore.logout();
+    await router.push("/login");
+  }
 };
-
 </script>
 <template>
   <n-layout-header bordered>

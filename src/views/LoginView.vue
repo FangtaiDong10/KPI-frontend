@@ -38,7 +38,8 @@ const handleLogin = async () => {
 
     // redirect to home page
     loading.value = true;
-    const redirect_url = "/";
+    const redirect_url =
+      router.currentRoute.value.query.redirect?.toString() || "/";
     await router.replace(redirect_url);
   } catch (e) {
     message.error(e.response.data.message);

@@ -1,6 +1,7 @@
 import axios from "axios";
-import { useAuthStore } from "@/stores/auth";
-import router from "@/router";
+import { useAuthStore } from "../stores/auth";
+import router from "../router";
+import { useMessage } from "naive-ui";
 
 axios.defaults.timeout = 5000;
 
@@ -22,6 +23,8 @@ axios.interceptors.response.use(
   },
   (error) => {
     if (error.response) {
+      // get the message from the browser running evironment
+      const message = window["$message"];
       // judge the response status code and to following things
       switch (error.response.status) {
         case 401:
@@ -31,10 +34,13 @@ axios.interceptors.response.use(
             authStore.logout();
             router.replace({
               path: "/login",
-              //   router query can record where you comming from before you redirect
               query: { redirect: router.currentRoute.fullPath },
             });
           }
+          break;
+
+        default:
+          message.error(error.response?.data?.message || "Unknown error");
       }
     }
   }

@@ -1,5 +1,5 @@
 import axios from "../utils/http";
-import { getUser } from "@/api/user";
+import { getUser } from "../api/user";
 import { defineStore } from "pinia";
 
 // prevent the name from being used as a variable
@@ -30,7 +30,7 @@ export const useAuthStore = defineStore({
       this.userInfo = data.user;
     },
     async reload() {
-      // based on current username to refresh userInfo 
+      // based on current username to refresh userInfo
       this.userInfo = await getUser(this.userInfo.username);
     },
     async logout() {

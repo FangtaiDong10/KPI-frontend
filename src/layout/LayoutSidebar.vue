@@ -25,12 +25,12 @@ const menu = [
       {
         label: 'Course 1',
         key: 'course1',
-        path: '/course/1',
+        path: '/courses/62d27c16379f1726b3be623a',
       },
       {
         label: 'Course 2',
         key: 'course2',
-        path: '/course/2',
+        path: '/courses/62d27c16379f1726b3be623a',
       },
     ],
   },
