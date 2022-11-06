@@ -1,11 +1,11 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterLink, RouterView } from "vue-router";
 import {
   NConfigProvider,
   NGlobalStyle,
   darkTheme,
   NMessageProvider,
-} from 'naive-ui';
+} from "naive-ui";
 import MessageContent from "./components/MessageContent.vue";
 </script>
 
@@ -19,5 +19,5 @@ import MessageContent from "./components/MessageContent.vue";
   </n-config-provider>
 </template>
 <style>
-@import '@/assets/base.css';
+@import "@/assets/base.css";
 </style>

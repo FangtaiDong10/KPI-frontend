@@ -1,8 +1,8 @@
 <script setup>
-import LayoutContent from './LayoutContent.vue';
-import LayoutHeader from './LayoutHeader.vue';
-import LayoutSidebar from './LayoutSidebar.vue';
-import { NLayout } from 'naive-ui';
+import LayoutContent from "./LayoutContent.vue";
+import LayoutHeader from "./LayoutHeader.vue";
+import LayoutSidebar from "./LayoutSidebar.vue";
+import { NLayout } from "naive-ui";
 </script>
 
 <template>
