@@ -35,6 +35,7 @@ const menu = [
     ],
   },
 ];
+
 const renderMenu = (menu) =>
   menu.map((item) => ({
     label: () => h(RouterLink, { to: item.path }, item.label),
@@ -45,6 +46,7 @@ const renderMenu = (menu) =>
         : undefined,
     children: item.children ? renderMenu(item.children) : undefined,
   }));
+  
 const menuOptions = renderMenu(menu);
 </script>
 
