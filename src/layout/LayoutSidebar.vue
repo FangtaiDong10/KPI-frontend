@@ -29,8 +29,8 @@ const menu = [
     children: [
       {
         label: "Python Boost1",
-        key: "courses/62d27c16379f1726b3be623a",
-        path: "/courses/62d27c16379f1726b3be623a",
+        key: "courses/636af4e7a443bd1db69a4874",
+        path: "/courses/636af4e7a443bd1db69a4874",
       },
     ],
   },
