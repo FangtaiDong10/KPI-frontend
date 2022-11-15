@@ -1,6 +1,7 @@
 <script setup>
 import { defineProps, computed } from "vue";
-import { NCard, NSpace, NH2, NP, NAvatar, NTag } from "naive-ui";
+import { NCard, NSpace, NH2, NP, NAvatar, NTag, NIcon } from "naive-ui";
+import { Person } from "@vicons/ionicons5";
 const props = defineProps(["userInfo"]);
 const userType = computed(() => props.userInfo.user_type.split(".")[1]);
 </script>
@@ -28,7 +29,17 @@ const userType = computed(() => props.userInfo.user_type.split(".")[1]);
       <n-space>
         <n-tag type="success" round :bordered="false">
           {{ userType }}
+          <template #icon>
+            <n-icon :component="Person"></n-icon>
+          </template>
         </n-tag>
+        <n-tag
+          v-for="permission in props.userInfo.permissions"
+          :key="permission"
+          round
+          :bordered="false"
+          >{{ permission }}</n-tag
+        >
       </n-space>
     </template>
   </n-card>
