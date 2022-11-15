@@ -15,6 +15,7 @@ import { useRouter } from "vue-router";
 import { computed, ref, onMounted } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { getCampusList } from "../api/campus";
+import { createStudent } from "../api/user";
 
 const router = useRouter();
 // initialize auth store and can be shared by all components
@@ -30,6 +31,43 @@ const registerModel = ref({
   telephone: "",
   wx: "",
 });
+
+// formRules for validation
+const formRules = {
+  username: {
+    required: true,
+    min: 3,
+    max: 20,
+    message: "Username must be between 3 and 20 characters",
+    trigger: "blur",
+  },
+  password: {
+    required: true,
+    min: 3,
+    max: 20,
+    message: "Password must be between 3 and 20 characters",
+    trigger: "blur",
+  },
+  display_name: {
+    required: true,
+    min: 3,
+    max: 20,
+    message: "Display name must be between 3 and 20 characters",
+    trigger: "blur",
+  },
+  telephone: {
+    required: true,
+    trigger: "blur",
+  },
+  wx: {
+    required: false,
+  },
+  campus: {
+    required: true,
+    message: "Please select a campus",
+    trigger: "blur",
+  },
+};
 
 const campusList = ref([]);
 onMounted(async () => {
@@ -49,19 +87,16 @@ const disabled = computed(
 );
 
 // handle register function
-const handleregister = async () => {
+const handleRegister = async () => {
   loading.value = true;
   try {
-    await authStore.register(
-      registerModel.value.username,
-      registerModel.value.password
-    );
+    // console.log(registerModel.value);
 
-    // redirect to home page
-    loading.value = true;
-    const redirect_url =
-      router.currentRoute.value.query.redirect?.toString() || "/";
-    await router.replace(redirect_url);
+    await createStudent(registerModel.value)
+
+    loading.value = false;
+    message.success("Register successfully");
+    router.push("/login");
   } catch (e) {
     message.error(e.response.data.message);
   }
@@ -76,7 +111,7 @@ const handleregister = async () => {
 
       <!-- register form -->
       <!-- ref property in form for form checking -->
-      <n-form ref="formRef" :model="registerModel">
+      <n-form ref="formRef" :model="registerModel" :rules="formRules">
         <n-form-item path="username" label="Username">
           <n-input
             type="text"
@@ -126,7 +161,7 @@ const handleregister = async () => {
             size="large"
             :loading="loading"
             :disabled="disabled"
-            @click="handleregister"
+            @click="handleRegister"
           >
             register
           </n-button>

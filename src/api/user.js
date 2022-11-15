@@ -6,3 +6,9 @@ export const getUser = async (username) => {
 
   return response.data;
 };
+
+export const createStudent = async (user) => {
+  // axio post can automatically convert the second parameter to JSON
+  const response = await axios.post("/students", user);
+  return response.data;
+}
