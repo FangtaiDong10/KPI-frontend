@@ -2,7 +2,7 @@
 import { NLayoutSider, NA, NMenu, NIcon } from "naive-ui";
 import { ref, h, watchEffect } from "vue";
 import { useRoute, RouterLink } from "vue-router";
-import { Home, Book } from "@vicons/ionicons5";
+import { Home, Book, Grid } from "@vicons/ionicons5";
 
 const route = useRoute();
 const collapsed = ref(false);
@@ -10,7 +10,11 @@ const currentKey = ref(null);
 
 watchEffect(() => {
   // console.log(route.fullPath);
-  currentKey.value = route.fullPath.slice(1);
+  if (route.fullPath.split("/").includes("browse")) {
+    currentKey.value = "browse";
+  } else {
+    currentKey.value = route.fullPath.slice(1);
+  }
 });
 
 // menu items
@@ -22,13 +26,19 @@ const menu = [
     icon: Home,
   },
   {
-    label: "Courses",
+    label: "All Forklifts",
+    key: "browse",
+    icon: Grid,
+    path: "/browse",
+  },
+  {
+    label: "My Forklifts",
     key: "courses",
     path: "/courses",
     icon: Book,
     children: [
       {
-        label: "Python Boost1",
+        label: "IMOW 301B",
         key: "courses/636af4e7a443bd1db69a4874",
         path: "/courses/636af4e7a443bd1db69a4874",
       },
@@ -38,7 +48,8 @@ const menu = [
 
 const renderMenu = (menu) =>
   menu.map((item) => ({
-    label: () => h(RouterLink, { to: item.path }, item.label),
+    label: () =>
+      item.children ? item.label : h(RouterLink, { to: item.path }, item.label),
     key: item.key,
     icon:
       item.icon != null
@@ -46,7 +57,7 @@ const renderMenu = (menu) =>
         : undefined,
     children: item.children ? renderMenu(item.children) : undefined,
   }));
-  
+
 const menuOptions = renderMenu(menu);
 </script>
 
@@ -61,7 +72,7 @@ const menuOptions = renderMenu(menu);
   >
     <router-link to="/" custom v-slot="{ navigate, href }">
       <n-a class="logo" :href="href" @click="navigate">
-        <img src="@/assets/kp_logo1.jpg" alt="" />
+        <img src="@/assets/kpi_logo1.jpg" alt="" />
         <span>KPI System</span>
       </n-a>
     </router-link>

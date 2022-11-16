@@ -20,18 +20,33 @@ const router = createRouter({
             requiresAuth: true,
           },
         },
+        // {
+        //   name: "courses",
+        //   path: "/courses",
+        //   component: () => import("../views/CoursesView.vue"),
+        //   meta: {
+        //     title: "Courses",
+        //     requiresAuth: true,
+        //   },
+        // },
         {
-          name: "courses",
-          path: "/courses",
-          component: () => import("../views/CoursesView.vue"),
+          name: "browse",
+          path: "/browse",
+          component: () => import("../views/BrowseView.vue"),
           meta: {
-            title: "Courses",
+            title: "All Courses",
             requiresAuth: true,
           },
         },
         {
+          name: "browse_course",
+          path: "/browse/:id",
+          component: () => import("../views/CourseView.vue"),
+          meta: { title: "Browse Course Page", requiresAuth: true },
+        },
+        {
           name: "course",
-          path: "courses/:id",
+          path: "/courses/:id",
           component: () => import("../views/CourseView.vue"),
           meta: { title: "Course Page", requiresAuth: true },
         },

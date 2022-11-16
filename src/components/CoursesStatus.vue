@@ -2,7 +2,6 @@
 import { NCard, NSpace, NH2, NText, NGrid, NGridItem, NButton } from "naive-ui";
 import { defineProps } from "vue";
 
-
 const props = defineProps(["userInfo"]);
 </script>
 
@@ -20,7 +19,7 @@ const props = defineProps(["userInfo"]);
           <n-h2 type="info" prefix="bar">
             <n-text type="info">{{
               props.userInfo.enrolled_courses
-                ? len(props.userInfo?.enrolled_courses)
+                ? props.userInfo?.enrolled_courses.length
                 : 0
             }}</n-text>
           </n-h2>
@@ -39,8 +38,11 @@ const props = defineProps(["userInfo"]);
 
     <template #footer>
       <n-space justify="end">
-        <n-button tertiary type="warning" tag="a" href="/browse"> Enroll New Courses -></n-button>
+        <n-button tertiary type="warning" tag="a" href="/browse">
+          Enroll New Courses -></n-button
+        >
       </n-space>
     </template>
+    
   </n-card>
 </template>

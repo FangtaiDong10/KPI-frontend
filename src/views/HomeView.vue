@@ -2,11 +2,29 @@
 import { useAuthStore } from "../stores/auth";
 import UserInfoCard from "../components/UserInfoCard.vue";
 import CoursesStatus from "../components/CoursesStatus.vue";
-import { NGrid, NGridItem } from "naive-ui";
+import CourseList from "../components/CourseList.vue";
+import { ref, onMounted } from "vue";
+
+import { getCourseList } from "../api/course";
+
+import { NGrid, NGridItem, NDivider } from "naive-ui";
 const authStore = useAuthStore();
 authStore.reload();
-</script>
 
+const enrolledCourses = ref({});
+
+onMounted(async () => {
+  const response = await getCourseList();
+
+  response.items = response.items.filter((course) =>
+    authStore.getUserInfo.enrolled_courses.map((c) => c.id).includes(course.id)
+  );
+
+  enrolledCourses.value = response;
+});
+
+
+</script>
 <template>
   <n-grid cols="1 m:2" :x-gap="12" :y-gap="8" responsive="screen">
     <n-grid-item>
@@ -14,9 +32,14 @@ authStore.reload();
     </n-grid-item>
 
     <n-grid-item>
-      <courses-status :user-info="authStore.getUserInfo"/>
+      <courses-status :user-info="authStore.getUserInfo" />
     </n-grid-item>
   </n-grid>
+
+  <n-divider />
+
+  <course-list :courseData="enrolledCourses"></course-list>
+
   <!-- no need parentheses(braket) when using pinia getters -->
   <!-- {{ authStore.getUserInfo }} -->
 </template>
