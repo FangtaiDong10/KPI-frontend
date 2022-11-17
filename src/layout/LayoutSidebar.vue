@@ -3,6 +3,12 @@ import { NLayoutSider, NA, NMenu, NIcon } from "naive-ui";
 import { ref, h, watchEffect } from "vue";
 import { useRoute, RouterLink } from "vue-router";
 import { Home, Book, Grid } from "@vicons/ionicons5";
+import { useAuthStore } from "../stores/auth";
+import { storeToRefs } from "pinia";
+
+// convert authStore to reference
+const authStore = useAuthStore();
+const auth = storeToRefs(authStore);
 
 const route = useRoute();
 const collapsed = ref(false);
@@ -18,33 +24,47 @@ watchEffect(() => {
 });
 
 // menu items
-const menu = [
-  {
-    label: "Home",
-    key: "home",
-    path: "/",
-    icon: Home,
-  },
-  {
-    label: "All Forklifts",
-    key: "browse",
-    icon: Grid,
-    path: "/browse",
-  },
-  {
-    label: "My Forklifts",
-    key: "courses",
-    path: "/courses",
-    icon: Book,
-    children: [
-      {
-        label: "IMOW 301B",
-        key: "courses/636af4e7a443bd1db69a4874",
-        path: "/courses/636af4e7a443bd1db69a4874",
-      },
-    ],
-  },
-];
+const createMenu = (coursesMenu) => {
+  return [
+    {
+      label: "Home",
+      key: "home",
+      path: "/",
+      icon: Home,
+    },
+    {
+      label: "All Forklifts",
+      key: "browse",
+      icon: Grid,
+      path: "/browse",
+    },
+    {
+      label: "My Forklifts",
+      key: "courses",
+      path: "/courses",
+      icon: Book,
+      children: coursesMenu,
+    },
+  ];
+};
+
+const menu = ref(createMenu([]));
+
+watchEffect(() => {
+  // menu.value = createMenu()
+
+  // console.log(auth.userInfo);
+
+  if (auth.userInfo.value?.enrolled_courses) {
+    menu.value = createMenu(
+      auth.userInfo.value.enrolled_courses.map((item) => ({
+        label: item.name,
+        key: "courses/" + item.id,
+        path: "/courses/" + item.id,
+      }))
+    );
+  }
+});
 
 const renderMenu = (menu) =>
   menu.map((item) => ({
@@ -58,7 +78,7 @@ const renderMenu = (menu) =>
     children: item.children ? renderMenu(item.children) : undefined,
   }));
 
-const menuOptions = renderMenu(menu);
+const menuOptions = renderMenu(menu.value);
 </script>
 
 <template>

@@ -33,7 +33,7 @@ const handleOptionSelect = async (key) => {
     </n-breadcrumb>
 
     <n-space align="center" class="navs" :size="20">
-      <span>Hello {{ auth.userInfo.value.username }} !</span>
+      <span>Hello {{ auth.userInfo?.value?.username }} !</span>
       <n-dropdown
         placement="bottom-end"
         :options="options"

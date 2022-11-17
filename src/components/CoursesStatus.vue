@@ -11,6 +11,7 @@ const props = defineProps(["userInfo"]);
       content: true,
       footer: 'soft',
     }"
+    v-if="props.userInfo"
   >
     <n-grid :cols="2" x-gap="12">
       <n-grid-item>

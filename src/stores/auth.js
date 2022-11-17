@@ -23,11 +23,19 @@ export const useAuthStore = defineStore({
   actions: {
     async login(username, password) {
       const response = await axios.post("auth/login", { username, password });
+      
       const { data } = response;
+      const userInfo = data.user;
+      if (userInfo.enrolled_courses === undefined) {
+        userInfo.enrolled_courses = [];
+      }
+
+
+
       localStorage.setItem(prefix + "token", data.token);
-      localStorage.setItem(prefix + "user_info", JSON.stringify(data.user));
+      localStorage.setItem(prefix + "user_info", JSON.stringify(userInfo));
       this.token = data.token;
-      this.userInfo = data.user;
+      this.userInfo = userInfo;
     },
     async reload() {
       // based on current username to refresh userInfo

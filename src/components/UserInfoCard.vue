@@ -12,6 +12,7 @@ const userType = computed(() => props.userInfo.user_type.split(".")[1]);
       content: true,
       footer: 'soft',
     }"
+    v-if="props.userInfo"
   >
     <template #default>
       <n-space justify="space-between" align="center">

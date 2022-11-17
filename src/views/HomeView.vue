@@ -17,16 +17,20 @@ onMounted(async () => {
   const response = await getCourseList();
 
   response.items = response.items.filter((course) =>
-    authStore.getUserInfo.enrolled_courses.map((c) => c.id).includes(course.id)
+    authStore.getUserInfo?.enrolled_courses?.map((c) => c.id).includes(course.id)
   );
 
   enrolledCourses.value = response;
 });
-
-
 </script>
 <template>
-  <n-grid cols="1 m:2" :x-gap="12" :y-gap="8" responsive="screen">
+  <n-grid
+    cols="1 m:2"
+    :x-gap="12"
+    :y-gap="8"
+    responsive="screen"
+    v-if="authStore.getUserInfo"
+  >
     <n-grid-item>
       <user-info-card :user-info="authStore.getUserInfo"></user-info-card>
     </n-grid-item>
@@ -41,5 +45,5 @@ onMounted(async () => {
   <course-list :courseData="enrolledCourses"></course-list>
 
   <!-- no need parentheses(braket) when using pinia getters -->
-  <!-- {{ authStore.getUserInfo }} -->
+  <!-- {{ authStore.getUserInfo? }} -->
 </template>

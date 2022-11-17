@@ -8,10 +8,10 @@ const courseList = computed(() => props.courseData.items);
 const authStore = useAuthStore();
 
 const isPurchasedCourse = (course_id) => {
-  if (authStore.getUserInfo.user_type == "User.Admin") {
+  if (authStore.getUserInfo?.user_type == "User.Admin") {
     return true;
   } else {
-    return authStore.getUserInfo.enrolled_courses
+    return authStore.getUserInfo?.enrolled_courses
       .map((c) => c.id)
       .includes(course_id);
   }
