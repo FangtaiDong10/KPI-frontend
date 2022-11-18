@@ -2,7 +2,7 @@
 import { NLayoutSider, NA, NMenu, NIcon } from "naive-ui";
 import { ref, h, watchEffect } from "vue";
 import { useRoute, RouterLink } from "vue-router";
-import { Home, Book, Grid } from "@vicons/ionicons5";
+import { Home, Book, Grid, Cart } from "@vicons/ionicons5";
 import { useAuthStore } from "../stores/auth";
 import { storeToRefs } from "pinia";
 
@@ -31,6 +31,12 @@ const createMenu = (coursesMenu) => {
       key: "home",
       path: "/",
       icon: Home,
+    },
+    {
+      label: "Orders",
+      key: "orders",
+      icon: Cart,
+      path: "/orders",
     },
     {
       label: "All Forklifts",
