@@ -9,3 +9,32 @@ export const getCourseList = async () => {
   const response = await axios.get("/courses");
   return response.data;
 };
+
+export const getLectureList = async (courseId) => {
+  const response = await axios.get("/courses/" + courseId + "/lectures");
+  return response.data;
+};
+
+
+
+export const uploadAttachment = async (
+  courseId,
+  lectureId,
+  file,
+  name,
+  type,
+  onUploadProgress
+) => {
+  const form = new FormData();
+  form.append("file", file);
+  form.append("metadata", JSON.stringify({ name, type }));
+
+  const response = await axios.post(
+    `/courses/${courseId}/lectures/${lectureId}/attachments`,
+    form,
+    {
+      onUploadProgress,
+    }
+  );
+  return response.data;
+};
