@@ -68,9 +68,7 @@ const uploadRequest = async ({ file, onFinish, onError, onProgress }) => {
         </n-avatar>
       </template>
 
-      <template #header-extra>
-        {{ scheduled_time.toLocaleDateString() }}</template
-      >
+      <template #header-extra> {{ props.lecture.title }}</template>
 
       <template #description>
         <span class="lecture-id">
