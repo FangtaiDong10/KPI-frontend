@@ -15,8 +15,6 @@ export const getLectureList = async (courseId) => {
   return response.data;
 };
 
-
-
 export const uploadAttachment = async (
   courseId,
   lectureId,
@@ -36,5 +34,21 @@ export const uploadAttachment = async (
       onUploadProgress,
     }
   );
+  return response.data;
+};
+
+export const createLecture = async (
+  courseId,
+  title,
+  streaming_url,
+  recording_url,
+  scheduled_time
+) => {
+  const response = await axios.post(`/courses/${courseId}/lectures`, {
+    title,
+    streaming_url,
+    recording_url,
+    scheduled_time,
+  });
   return response.data;
 };
