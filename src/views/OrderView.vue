@@ -10,13 +10,28 @@ import {
   NH1,
   NDescriptions,
   NDescriptionsItem,
+  NCard,
+  NForm,
+  NFormItem,
+  NInput,
+  NInputNumber,
+  useMessage,
 } from "naive-ui";
-
+import { payOrder } from "../api/order";
 const authStore = useAuthStore();
 const orderList = ref([]);
 const loading = ref(true);
 const showView = ref(false);
+
+const showConfirmPayment = ref(false);
+const paymentForm = ref({
+  price: 0,
+  comment: "",
+});
+const paymentFormRef = ref(null);
 const selectedRow = ref(null);
+const message = useMessage();
+
 const paymentcolumn = reactive({
   key: "payment_status",
   title: "Payment Status",
@@ -93,7 +108,15 @@ const columns = ref([
                 marginLeft: "8px",
               },
 
-              onClick: () => {},
+              onClick: () => {
+                showConfirmPayment.value = true;
+                // paymentForm change to reactive
+                paymentForm.value = {
+                  price: row.data.original_price,
+                  comment: "",
+                };
+                selectedRow.value = row;
+              },
             },
             "Pay"
           ),
@@ -172,6 +195,24 @@ onMounted(async () => {
 
   loading.value = false;
 });
+
+const confirmPayment = async () => {
+  try {
+    await payOrder(
+      selectedRow.value.id,
+      paymentForm.value.price,
+      paymentForm.value.comment
+    );
+    showConfirmPayment.value = false;
+
+    // refresh the page
+    setTimeout(() => window.location.reload(), 800);
+
+    message.success("Payment been confirmed");
+  } catch (e) {
+    console.log(e);
+  }
+};
 </script>
 
 <template>
@@ -241,6 +282,39 @@ onMounted(async () => {
         </n-button></n-space
       >
     </template>
+  </n-modal>
+  <n-modal v-model:show="showConfirmPayment"
+    ><n-card
+      style="width: 400px"
+      title="Confirm Payment"
+      :bordered="false"
+      size="huge"
+    >
+      <n-space vertical>
+        <n-h1>Payment Details</n-h1>
+
+        <!-- paymentForm is {}, paymentFormRef is null -->
+        <n-form ref="paymentFormRef" :label-width="80" :model="paymentForm">
+          <n-form-item label="Actual Payment" path="price">
+            <n-input-number
+              v-model:value="paymentForm.price"
+              :show-button="false"
+            >
+              <template #prefix> $ </template>
+            </n-input-number>
+          </n-form-item>
+          <n-form-item label="Comment" path="comment">
+            <n-input v-model:value="paymentForm.comment" type="textarea" />
+          </n-form-item>
+        </n-form>
+      </n-space>
+      <template #footer>
+        <n-space>
+          <n-button type="primary" @click="confirmPayment">Confirm</n-button>
+          <n-button @click="showConfirmPayment = false">Cancel</n-button>
+        </n-space>
+      </template>
+    </n-card>
   </n-modal>
 </template>
 
